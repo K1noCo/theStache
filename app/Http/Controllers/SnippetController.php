@@ -14,7 +14,8 @@ class SnippetController extends Controller
      */
     public function index()
     {
-        //
+        $snippets = Snippet::get();
+        return view('snippets.index', compact('snippets'));
     }
 
     /**
@@ -24,7 +25,7 @@ class SnippetController extends Controller
      */
     public function create()
     {
-        //
+        return view('snippets.create');
     }
 
     /**
@@ -35,7 +36,11 @@ class SnippetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $snippet = Snippet::create();
+        $snippet->title = $request->title;
+        $snippet->code = $request->code;
+        $snippet->save();
+        return back();
     }
 
     /**
@@ -46,7 +51,7 @@ class SnippetController extends Controller
      */
     public function show(Snippet $snippet)
     {
-        //
+        return view('snippets.show', compact('snippet'));
     }
 
     /**

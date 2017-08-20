@@ -19,4 +19,6 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::resource('snippets', 'SnippetController');
+Route::group(['middleware' => 'auth'], function() {
+    Route::resource('snippets', 'SnippetController');
+});
