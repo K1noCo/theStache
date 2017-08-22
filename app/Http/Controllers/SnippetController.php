@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class SnippetController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index', 'show');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,7 @@ class SnippetController extends Controller
      */
     public function index()
     {
-        $snippets = Snippet::get();
+        $snippets = Snippet::latest()->get();
         return view('snippets.index', compact('snippets'));
     }
 
@@ -36,6 +41,11 @@ class SnippetController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate(request(), [
+            'title' => 'required',
+            'code' => 'required'
+        ]);
+
         $snippet = Snippet::create();
         $snippet->title = $request->title;
         $snippet->code = $request->code;
@@ -62,7 +72,7 @@ class SnippetController extends Controller
      */
     public function edit(Snippet $snippet)
     {
-        //
+        return view('snippets.edit', compact('snippet'));
     }
 
     /**
@@ -74,7 +84,15 @@ class SnippetController extends Controller
      */
     public function update(Request $request, Snippet $snippet)
     {
-        //
+        $this->validate(request(), [
+            'title' => 'required',
+            'code' => 'required'
+        ]);
+        $snippet = Snippet::firstOrFail($snippet);
+        $snippet->title = $request->title;
+        $snippet->code = $request->code;
+        $snippet->save();
+        return back();
     }
 
     /**
