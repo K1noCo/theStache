@@ -50,7 +50,8 @@ class SnippetController extends Controller
         $snippet->title = $request->title;
         $snippet->code = $request->code;
         $snippet->save();
-        return back();
+        session()->flash('message', 'Snippet has been created');
+        return redirect('snippets');
     }
 
     /**
@@ -88,10 +89,7 @@ class SnippetController extends Controller
             'title' => 'required',
             'code' => 'required'
         ]);
-        $snippet = Snippet::firstOrFail($snippet);
-        $snippet->title = $request->title;
-        $snippet->code = $request->code;
-        $snippet->save();
+        $snippet->update($request->all());
         return back();
     }
 
@@ -103,6 +101,8 @@ class SnippetController extends Controller
      */
     public function destroy(Snippet $snippet)
     {
-        //
+        $snippet->delete();
+        session()->flash('message', 'Snippet has been deleted');
+        return redirect('snippets');
     }
 }

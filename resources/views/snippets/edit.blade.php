@@ -8,9 +8,9 @@
                 <div class="panel-heading">Dashboard edit</div>
 
                 <div class="panel-body">
-                    <form action="{{ URL::to('snippets/{snippet}') }}" method="POST">
+                    <form action="{{ route('snippets.update', $snippet) }}" method="POST">
                         {{ csrf_field() }}
-                        {{ method_field('PUT') }}
+                        {{ method_field('PATCH') }}
                         <div class="form-group">
                             <label for="title">Title</label>
                             <input placeholder="Title" class="form-control" type="text" id="title" name="title" value="{{ $snippet->title }}">
